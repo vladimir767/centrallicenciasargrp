@@ -202,7 +202,9 @@
         const datosGuardados = localStorage.getItem('licenciasArgentinaRP');
         if (datosGuardados) {
           licencias = JSON.parse(datosGuardados);
-          console.log("Licencias cargadas desde storage:", Object.keys(licencias).length);
+          console.log("✓ Licencias cargadas desde storage:", Object.keys(licencias).length);
+        } else {
+          console.log("No hay datos previos en storage");
         }
       } catch (error) {
         console.error("Error al cargar licencias:", error);
@@ -214,7 +216,7 @@
     function guardarLicenciasEnStorage() {
       try {
         localStorage.setItem('licenciasArgentinaRP', JSON.stringify(licencias));
-        console.log("Licencias guardadas en storage");
+        console.log("✓ Licencias guardadas en storage:", Object.keys(licencias).length);
       } catch (error) {
         console.error("Error al guardar licencias:", error);
         alert("Error al guardar. El archivo puede ser muy grande.");
@@ -224,6 +226,7 @@
     function mostrarSistema() {
       document.getElementById("pantallaInicio").classList.add("hidden");
       document.getElementById("sistemaCompleto").classList.remove("hidden");
+      cargarLicencias(); // Cargar las licencias al mostrar el sistema
     }
 
     function solicitarClave() {
@@ -311,6 +314,7 @@
       };
 
       licencias[numero] = licencia;
+      guardarLicenciasEnStorage(); // GUARDAR EN LOCALSTORAGE
       alert("✓ Licencia registrada exitosamente");
       
       cerrarFormulario();
@@ -378,6 +382,7 @@
     function confirmarEliminar() {
       if (confirm("¿Está seguro que desea eliminar esta licencia?\n\nEsta acción no se puede deshacer.")) {
         delete licencias[licenciaActual.numero];
+        guardarLicenciasEnStorage(); // GUARDAR DESPUÉS DE ELIMINAR
         alert("✓ Licencia eliminada correctamente");
         cerrarModal();
         cargarLicencias();
@@ -408,7 +413,8 @@
       }
     });
 
-    // Inicializar
+    // INICIALIZAR: CARGAR DATOS AL INICIO
+    cargarLicenciasDesdeStorage();
     cargarLicencias();
   </script>
 </body>
