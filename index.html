@@ -196,6 +196,31 @@
     let licenciaActual = null;
     let licencias = {};
 
+    // Cargar licencias desde localStorage al iniciar
+    function cargarLicenciasDesdeStorage() {
+      try {
+        const datosGuardados = localStorage.getItem('licenciasArgentinaRP');
+        if (datosGuardados) {
+          licencias = JSON.parse(datosGuardados);
+          console.log("Licencias cargadas desde storage:", Object.keys(licencias).length);
+        }
+      } catch (error) {
+        console.error("Error al cargar licencias:", error);
+        licencias = {};
+      }
+    }
+
+    // Guardar licencias en localStorage
+    function guardarLicenciasEnStorage() {
+      try {
+        localStorage.setItem('licenciasArgentinaRP', JSON.stringify(licencias));
+        console.log("Licencias guardadas en storage");
+      } catch (error) {
+        console.error("Error al guardar licencias:", error);
+        alert("Error al guardar. El archivo puede ser muy grande.");
+      }
+    }
+
     function mostrarSistema() {
       document.getElementById("pantallaInicio").classList.add("hidden");
       document.getElementById("sistemaCompleto").classList.remove("hidden");
